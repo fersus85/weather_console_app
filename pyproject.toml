@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "weather"
+version = "0.1.0"
+description = ""
+authors = ["fersus <deriabin_85@mail.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+whereami = "^0.4.85"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
