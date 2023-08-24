@@ -15,26 +15,35 @@ class Coordinates:
 adress = "https://www.geolocation.com/ru"
 
 
-def float_coor(value: str) -> float:
+def _float_coor(value: str) -> float:
+    '''convert str in float, if failed raise my custom excepterror'''
     try:
         return float(value)
     except ValueError:
         raise CantGetCoordinates
 
 
-def get_coors(resp):
+def _get_coors(resp: str) -> tuple[float]:
+    '''Find latitude and longitude in {adress} response,
+       convert it in float and return tuple [float]'''
     latitude = re.findall(r"latitude.*\d{2}.\d{4}", resp)
     longitude = re.findall(r"longitude.*\d{2}.\d{4}", resp)
-    return float_coor(longitude[0][12:]), float_coor(latitude[0][11:])
+    return _float_coor(longitude[0][12:]), _float_coor(latitude[0][11:])
 
 
-def get_gps_coordinates() -> Coordinates:
+def _get_geoloc_response() -> str:
+    '''get response from {adress}, convert it in str'''
     process = Popen(['curl', adress], stdout=PIPE)
     (output, err) = process.communicate()
     exit_code = process.wait()
     if err is not None or exit_code != 0:
         raise CantGetCoordinates
-    coors = get_coors(output.decode().strip().lower())
+    return output.decode().strip().lower()
+
+
+def get_gps_coordinates() -> Coordinates:
+    resp = _get_geoloc_response()
+    coors = _get_coors(resp)
     return Coordinates(longitude=coors[0],
                        latitude=coors[1])
 
