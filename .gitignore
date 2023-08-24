@@ -1,1 +1,4 @@
 __pycache__/
+.env
+wether.sublime-project
+wether.sublime-workspace
